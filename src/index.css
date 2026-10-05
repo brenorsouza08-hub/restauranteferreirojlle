@@ -33,6 +33,9 @@
 }
 
 @layer base {
+  :root {
+    color-scheme: dark;
+  }
   html {
     background: var(--color-ink);
     color: var(--color-cream);

@@ -6,6 +6,9 @@ import Eyebrow from './ui/Eyebrow'
 import { PinIcon } from './ui/Icons'
 import OpenStatus from './ui/OpenStatus'
 
+// Em ambientes que bloqueiam iframes (pré-visualização estática), o mapa abre o Google Maps em nova aba.
+const STATIC_PREVIEW = import.meta.env.VITE_STATIC_PREVIEW === '1'
+
 // Mapa estilizado; o Google Maps interativo é carregado sob demanda (mais leve e sem rastreamento antecipado).
 function MapFrame() {
   const [active, setActive] = useState(false)
@@ -42,13 +45,24 @@ function MapFrame() {
             {site.address.district} · {site.address.city}
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => setActive(true)}
-          className="caption link-underline py-2 text-[0.62rem] text-cream/80 transition-colors hover:text-cream"
-        >
-          Abrir mapa interativo
-        </button>
+        {STATIC_PREVIEW ? (
+          <a
+            href={site.links.directions}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="caption link-underline py-2 text-[0.62rem] text-cream/80 transition-colors hover:text-cream"
+          >
+            Abrir no Google Maps
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setActive(true)}
+            className="caption link-underline py-2 text-[0.62rem] text-cream/80 transition-colors hover:text-cream"
+          >
+            Abrir mapa interativo
+          </button>
+        )}
       </div>
 
       {active && (
